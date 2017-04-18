@@ -5,7 +5,7 @@ module.exports = {
     return axios.post('https://api.kivaws.org/graphql', {
       query: `
      {
-       loans (filters: {status:fundRaising}, limit: 4) {
+       loans (filters: {status:fundRaising}, limit: 6) {
          values {
            id
            name

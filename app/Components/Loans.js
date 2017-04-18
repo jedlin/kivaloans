@@ -23,7 +23,7 @@ function LoanGrid (props) {
               <li className='loan-use'>A loan of ${loan.loanAmount} helps to {loan.use}</li>
               <li className='loan-amount-left'>${loan.loanAmount - loan.fundedAmount} to go</li>
               <a href={'https://www.kiva.org/lend/' + loan.id}>
-                <li className='learn-more'>Learn more</li>
+                <li className='learn-more'>Learn more / lend</li>
               </a>
             </ul>
           </li>
