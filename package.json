@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server --open  --config webpack.config.js"
+    "start": "webpack-dev-server --open",
+     "build": "NODE_ENV='production' webpack -p"
   },
   "babel": {
     "presets": [
