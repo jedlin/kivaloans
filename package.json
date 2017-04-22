@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open",
-     "build": "NODE_ENV='production' webpack -p"
+    "start": "webpack-dev-server -open",
+    "start-pm2": "pm2 start ecosystem.config.js",
+    "start-webpack": "webpack --progress --watch",
+    "build": "NODE_ENV='production' webpack -p",
+    "kill-watchers": "pm2 kill"
   },
   "babel": {
     "presets": [
@@ -17,6 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.16.1",
+    "express": "^4.15.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },

@@ -11,7 +11,13 @@ const config = {
   },
   module: {
     rules: [
-      { test: /\.(js)$/, use: 'babel-loader' },
+      { 
+        test: /\.(js)$/,
+        loader: 'babel-loader',
+        exclude: [
+          path.resolve(__dirname, 'node_modules')
+        ]
+      },
       { test: /\.css$/, use: [ 'style-loader', 'css-loader' ]}
     ]
   },
