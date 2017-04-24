@@ -63,5 +63,10 @@ li {
 }
 
 .borrower-photo {
-
+  display: block;
+  min-height: 250px;
+  background: #EEE;
+  text-align: center;
+  vertical-align: middle;
+  color: #AAA;
 }

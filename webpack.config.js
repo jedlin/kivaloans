@@ -14,6 +14,9 @@ const config = {
       { 
         test: /\.(js)$/,
         loader: 'babel-loader',
+        include: [
+          path.resolve(__dirname, 'app')
+        ],
         exclude: [
           path.resolve(__dirname, 'node_modules')
         ]
@@ -21,9 +24,9 @@ const config = {
       { test: /\.css$/, use: [ 'style-loader', 'css-loader' ]}
     ]
   },
-  devServer: {
-    historyApiFallback: true,
-  },
+  // devServer: {
+  //   historyApiFallback: true,
+  // },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html'

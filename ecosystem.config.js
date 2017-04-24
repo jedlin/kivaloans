@@ -16,10 +16,10 @@ module.exports = {
       env: {
         COMMON_VARIABLE: 'true'
       }
-      // ,
-      // env_production : {
-      //   NODE_ENV: 'production'
-      // }
+      ,
+      env_production : {
+        NODE_ENV: 'production'
+      }
     }
   ]
 };

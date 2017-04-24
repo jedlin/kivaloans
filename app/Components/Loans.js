@@ -1,6 +1,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-var api = require('../utils/api');
+const api = require('../utils/api');
+const queryParser = require('../utils/query-parser');
 
 function LoanGrid (props) {
    return (
@@ -47,21 +48,24 @@ class Loans extends React.Component {
     this.updateLoans();
   }
 
+  // TODO: Move this operation up a level so that loans are passed into this component + retrieved beforehand
+  // -> This will allow us to reuse the view on the server and front end
   updateLoans() {
-    this.setState( () => {
-      return {
-        loans: null
-      }
-    })
-
-  api.fetchLoans()
-      .then( (loans) => {
-        this.setState( () => {
-          return {
-            loans: loans
-          }
-        })
-      });
+    console.log(window.location.search);
+    // parse query string
+    queryParser.parseQueryParams(window.location.search)
+      // transform query object
+      .then( response => queryParser.transformQueryObject(response) )
+      // fetch loans with prepared query
+      .then( response => api.fetchLoans(response) )
+      // set state with returned loans
+      .then( loans => this.setState( () => { return { loans: loans } } ) )
+      // catch any errors in the promise chain
+      .catch(
+        (error) => {
+          console.log(error);
+        }
+      );
   };
 
   render() {
