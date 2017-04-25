@@ -55,7 +55,7 @@ class Loans extends React.Component {
     // parse query string
     queryParser.parseQueryParams(window.location.search)
       // transform query object
-      .then( response => queryParser.transformQueryObject(response) )
+      .then( response => queryParser.transformQueryObjectWithFilters(response) )
       // fetch loans with prepared query
       .then( response => api.fetchLoans(response) )
       // set state with returned loans
