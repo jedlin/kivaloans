@@ -14,6 +14,9 @@ module.exports = {
     return new Promise((resolve, reject) => {
       try {
         console.log(rawQueryString);
+        if (typeof rawQueryString === undefined || rawQueryString ===  '') {
+          resolve('');
+        }
 
         // Remove that ? if it preceeds the query params
         const trimmedQuery = (rawQueryString.indexOf('?') === 0) ? rawQueryString.substring(1) : rawQueryString;
@@ -41,6 +44,10 @@ module.exports = {
 
     return new Promise((resolve, reject) => {
       try {
+        if (typeof queryObject === undefined || queryObject ===  '') {
+          resolve('');
+        }
+
         // Setup Fresh Object
         let gqlQueryObject = {filters:{}};
 
