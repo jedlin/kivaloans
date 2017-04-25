@@ -38,42 +38,12 @@ LoanGrid.propTypes = {
 }
 
 class Loans extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      loans: null
-    }
-  };
-  componentDidMount () {
-    this.updateLoans();
-  }
-
-  // TODO: Move this operation up a level so that loans are passed into this component + retrieved beforehand
-  // -> This will allow us to reuse the view on the server and front end
-  updateLoans() {
-    console.log(window.location.search);
-    // parse query string
-    queryParser.parseQueryParams(window.location.search)
-      // transform query object
-      .then( response => queryParser.transformQueryObjectWithFilters(response) )
-      // fetch loans with prepared query
-      .then( response => api.fetchLoans(response) )
-      // set state with returned loans
-      .then( loans => this.setState( () => { return { loans: loans } } ) )
-      // catch any errors in the promise chain
-      .catch(
-        (error) => {
-          console.log(error);
-        }
-      );
-  };
-
   render() {
     return (
       <div>
-        {!this.state.loans
+        {!this.props.loandata
           ? <p>LOADING</p>
-          : <LoanGrid loans={this.state.loans} />
+          : <LoanGrid loans={this.props.loandata} />
         }
       </div>
     )
