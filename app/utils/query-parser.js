@@ -5,6 +5,7 @@ module.exports = {
    */
   parseQueryParams: (rawQueryString) => {
     // Sample Urls
+    // ?country=sv&isGroup=false&tag=10&riskRating=0,5&sector=1,12&status=fundRaising&attribute=6&sortBy=popularity
     // https://api.kivaws.org/v2/loans
     // ?limit=24&facets=true&type=lite&sortBy=popularity&q=j%3A%7B%22riskRating%22%3A%5B0%2C5%5D%2C%22sector%22%3A%5B1%5D%2C%22status%22%3A%22fundRaising%22%7D
     // ?limit=3&facets=true&type=lite&sortBy=amountLeft&q=j%3A{%22sector%22%3A[3]%2C%22status%22%3A%22fundRaising%22}
@@ -23,21 +24,6 @@ module.exports = {
         // generate object using JSON.parse and it's reviver function to decode uri
         let queryObject = JSON.parse(wrappedQuery, (key, value) => { return key === "" ? value : decodeURIComponent(value) });
         
-
-        // Create the filters node + parse it's contents
-        queryObject.filters = JSON.parse(queryObject.q.substring(2));
-        // Move sortBy to sort_by
-        if (queryObject.sortBy) {
-          queryObject.sort_by = queryObject.sortBy;
-          delete queryObject.sortBy;
-        }
-        
-        // Get rid of q, graphql uses filters
-        if (queryObject.q) delete queryObject.q;
-        
-        console.log('in promise', queryObject);
-        console.log(JSON.stringify(queryObject));
-        
         // Resolve the Promise with a final object
         resolve(queryObject);
       }
@@ -55,17 +41,26 @@ module.exports = {
 
     return new Promise((resolve, reject) => {
       try {
+        // Setup Fresh Object
+        let gqlQueryObject = {filters:{}};
+
         // Graphql parameters for loans
-        // offset: Int, limit: Int, filters: LoanSearchFilters {object}, query_string: String, sort_by: LoanSearchSortBy "String"
+        // offset: Int, limit: Int, filters: LoanSearchFilters {object}, query_string: String, sort_by: LoanSearchSortBy 'String'
         const topLevelKeys = ['offset', 'limit', 'filters', 'query_string', 'sort_by'];
-        // delete unused keys
+
+        // Move sortBy to sort_by
+        if (queryObject.sortBy) {
+          gqlQueryObject.sort_by = queryObject.sortBy;
+        }
+
+        // gather remaining top level keys
         for (let key in queryObject) {
-          console.log(key, queryObject[key]);
-          if (!topLevelKeys.includes(key)) {
-            console.log('deleting ' + key);
-            delete queryObject[key];
+          if (topLevelKeys.includes(key)) {
+            gqlQueryObject[key] = queryObject[key];
           }
         }
+
+        console.log(gqlQueryObject);
 
         // Let's Play Operation on the filters Object in order to make it match our loans graphql properties
 
@@ -85,26 +80,67 @@ module.exports = {
         // Ensure String
         const stringKeys = ['distributionModel', 'gender', 'status'];
 
-        if (typeof queryObject.filters === 'object') {
-          for (let filterKey in queryObject.filters) {
+        // Collect all possible filter keys
+        const allFilterKeys = minMaxRangeKeys.concat(booleanKeys, arrayOfStringKeys, arrayOfIntKeys, stringKeys);
 
-            // Operate on MinMaxRange Keys
-            if (minMaxRangeKeys.includes(filterKey)) {
-              console.log('MinMaxRange ', filterKey);
-              // convert [0,5] to {min:float, max:float}
-              let tempArray = queryObject.filters[filterKey];
-              if (tempArray.length = 1) {
-                // sometimes it returns with 1 entry ommitting 0 for the range
-                queryObject.filters[filterKey] = {min: 0, max: tempArray[0]};
-              } else {
-                queryObject.filters[filterKey] = {min: tempArray[0], max: tempArray[1]};
-              }
+        for (let filterKey in queryObject) {
+
+          // Operate on stringKeys Keys
+          if (stringKeys.includes(filterKey)) {
+            console.log('stringKeys ', filterKey);
+            // ensure value is a string
+            if (typeof queryObject[filterKey] == 'string') {
+              gqlQueryObject.filters[filterKey] = queryObject[filterKey];
             }
+          }
+
+          // Operate on MinMaxRange Keys
+          if (minMaxRangeKeys.includes(filterKey)) {
+            console.log('MinMaxRange ', filterKey);
+            // convert [0,5] to {min:float, max:float}
+            let minMaxArray = queryObject[filterKey].split(',');
+            if (minMaxArray.length === 1) {
+              // sometimes it returns with 1 entry ommitting 0 for the range
+              gqlQueryObject.filters[filterKey] = {min: '0', max: minMaxArray[0]};
+            } else {
+              gqlQueryObject.filters[filterKey] = {min: minMaxArray[0], max: minMaxArray[1]};
+            }
+          }
+
+          // Operate on booleanKeys Keys
+          if (booleanKeys.includes(filterKey)) {
+            console.log('booleanKeys ', filterKey);
+            // ensure value is true or false
+            if (queryObject[filterKey] === 'true' || queryObject[filterKey] === 'false') {
+              gqlQueryObject.filters[filterKey] = queryObject[filterKey];
+            }
+          }
+
+          // Operate on arrayOfStringKeys Keys
+          // if (arrayOfStringKeys.includes(filterKey)) {
+          //   console.log('arrayOfStringKeys ', filterKey);
+          //   // ensure value is an array of strings
+          //   let stringsArray = queryObject[filterKey].split(',');
+          //   for (let s = 0; s < stringsArray.length; s++) {
+          //     // TODO: figure out why graphql won't accept this array of strings
+          //     // ...look like strings to me + this country: ["ng","zm"] works in the graphicql interface
+          //     console.log(typeof stringsArray[s]);
+          //   }
+          //   gqlQueryObject.filters[filterKey] = stringsArray;
+          // }
+
+          // Operate on arrayOfIntKeys Keys
+          if (arrayOfIntKeys.includes(filterKey)) {
+            console.log('arrayOfIntKeys ', filterKey);
+            // ensure value is an array of strings
+            let intsArray = queryObject[filterKey].split(',');
+            gqlQueryObject.filters[filterKey] = intsArray;
           }
         }
 
+        console.log(gqlQueryObject);
         // Resolve the Promise with a final object
-        resolve(queryObject);
+        resolve(gqlQueryObject);
       }
       catch (error) {
         console.log(error);
