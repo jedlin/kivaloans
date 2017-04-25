@@ -19,10 +19,10 @@ Start webpack dev in it's own terminal
 
 Start Express via pm2 with logs
 
-    pm2 start ecosystem.config.js
+    pm2 start index.js
 
 - pm2 status (to view status)
-- pm2 restart (to do just that)
+- pm2 restart 0 (to do just that)
 
 Start webpack dev in it's own terminal
 
