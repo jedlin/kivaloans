@@ -23,6 +23,6 @@ app.get('/loancards', loanCards.loancards);
 app.use(express.static(path.resolve(__dirname, 'dist')));
 
 // setup port
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Port 3000 activated with Loan Cards');
 })

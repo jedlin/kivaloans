@@ -14,11 +14,14 @@ module.exports = {
         'followSymlinks' : false
       },
       env: {
-        COMMON_VARIABLE: 'true'
+        COMMON_VARIABLE: 'true',
+        NODE_ENV: 'dev',
+        PORT: 3000
       }
       ,
       env_production : {
-        NODE_ENV: 'production'
+        NODE_ENV: 'production',
+        PORT: 80
       }
     }
   ]
