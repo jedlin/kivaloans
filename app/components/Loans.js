@@ -9,24 +9,23 @@ function LoanGrid (props) {
       { props.loans.map( (loan, index) => {
         return (
           <li key={index} className='loan-card'>
-            <ul>
-              <li>
-                <img
-                  className='borrower-photo'
-                  src={'https://www-kiva-org.global.ssl.fastly.net/img/s250/' + loan.image.hash + '.jpg'}
-                  alt={'Picture of ' + loan.name}
-                />
-              </li>
-              <li>
-                <a className='borrower-name' href={'https://www.kiva.org/lend/' + loan.id}>{loan.name}</a>
-                <span className='borrower-country'>{loan.location.country.name}</span>
-              </li>
-              <li className='loan-use'>A loan of ${loan.loanAmount} helps to {loan.use}</li>
-              <li className='loan-amount-left'>${loan.loanAmount - loan.fundedAmount} to go</li>
-              <a href={'https://www.kiva.org/lend/' + loan.id}>
-                <li className='learn-more'>Learn more / lend</li>
-              </a>
-            </ul>
+            <a href={'https://www.kiva.org/lend/' + loan.id}>
+              <img
+                className='borrower-photo'
+                src={'https://www-kiva-org.global.ssl.fastly.net/img/s280/' + loan.image.hash + '.jpg'}
+                alt={'Picture of ' + loan.name}
+              />
+            </a>
+            <div className='name-and-country'>
+              <a className='borrower-name' href={'https://www.kiva.org/lend/' + loan.id}>{loan.name}</a>
+              <span className={"f16 " +  loan.location.country.isoCode.toLowerCase()}></span>
+              <span className='borrower-country'>{loan.location.country.name}</span>
+            </div>
+            <div className='loan-use'>A loan of ${loan.loanAmount.toLocaleString()} helps to {loan.use}</div>
+            <div className='loan-amount-left'>${(loan.loanAmount - loan.fundedAmount).toLocaleString()} to go</div>
+            <a href={'https://www.kiva.org/lend/' + loan.id}>
+              <li className='learn-more'>Learn more / lend</li>
+            </a>
           </li>
         )
         })}

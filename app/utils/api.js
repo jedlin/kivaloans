@@ -5,7 +5,7 @@ module.exports = {
 
     // Use custom Filters if present otherwise use default values
     const offset = (typeof customFilters !== 'undefined' && typeof customFilters.offset !== 'undefined') ? customFilters.offset : '0';
-    const limit = (typeof customFilters !== 'undefined' && typeof customFilters.limit !== 'undefined') ? customFilters.limit : '6';
+    const limit = (typeof customFilters !== 'undefined' && typeof customFilters.limit !== 'undefined') ? customFilters.limit : '3';
     const filters = (typeof customFilters !== 'undefined' && typeof customFilters.filters !== 'undefined') ? customFilters.filters : '{status: fundRaising}';
     const sort_by = (typeof customFilters !== 'undefined' && typeof customFilters.sort_by !== 'undefined') ? customFilters.sort_by : 'newest';
 
@@ -23,6 +23,7 @@ module.exports = {
            location {
              country {
                name
+               isoCode
              }
            }
             loanAmount
