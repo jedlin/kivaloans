@@ -16,15 +16,22 @@ function LoanGrid (props) {
                 alt={'Picture of ' + loan.name}
               />
             </a>
-            <div className='name-and-country'>
-              <a className='borrower-name' href={'https://www.kiva.org/lend/' + loan.id}>{loan.name}</a>
-              <span className={"f16 " +  loan.location.country.isoCode.toLowerCase()}></span>
-              <span className='borrower-country'>{loan.location.country.name}</span>
+
+            <div className='loan-details'>
+              <div className='name-and-country'>
+                <a className='borrower-name' href={'https://www.kiva.org/lend/' + loan.id}>{loan.name}</a>
+                <span className={"f16 " +  loan.location.country.isoCode.toLowerCase()}></span>
+                <span className='borrower-country'>{loan.location.country.name}</span>
+              </div>
+              <div className='loan-use'>A loan of ${parseInt(loan.loanAmount).toLocaleString()} helps to {loan.use}</div>
             </div>
-            <div className='loan-use'>A loan of ${loan.loanAmount.toLocaleString()} helps to {loan.use}</div>
-            <div className='loan-amount-left'>${(loan.loanAmount - loan.fundedAmount).toLocaleString()} to go</div>
+
+            <div className='fundraising-meter'>
+              <span className="meter" style={{width: parseInt(loan.fundedAmount) / parseInt(loan.loanAmount)* 100 +'%'}}></span>
+              <span className="caption">${(loan.loanAmount - loan.fundedAmount).toLocaleString()} to go</span>
+            </div>
             <a href={'https://www.kiva.org/lend/' + loan.id}>
-              <li className='learn-more'>Learn more / lend</li>
+              <div className='learn-more'>Learn more / lend</div>
             </a>
           </li>
         )

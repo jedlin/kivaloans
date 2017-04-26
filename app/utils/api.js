@@ -33,7 +33,6 @@ module.exports = {
      }
      `
     }).then(response => {
-        console.log(response);
         return response.data.data.loans.values;
     })
   }

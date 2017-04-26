@@ -29,9 +29,6 @@ li {
 .loan-card {
   width: 280px;
   margin: 20px;
-}
-
-.loan-card {
   border: 1px solid #eee;
 }
 
@@ -42,6 +39,10 @@ li {
 
 .loan-card .f16 {
   margin: 0 0.5rem;
+}
+
+.loan-details {
+  height: 134px;
 }
 
 .name-and-country {
@@ -56,15 +57,28 @@ li {
 .loan-use {
   font-weight: 300;
   margin: 6px;
-  height: 5rem;
 }
 
-.loan-amount-left {
+.fundraising-meter {
+  position: relative;
   height: 30px;
-  line-height: 28px;;
   text-align: center;
   background-color: #efefef;
 }
+
+.fundraising-meter .meter {
+  position: absolute;
+  left: 0;
+  height: 30px;
+  background-color: #63a541;
+}
+
+.fundraising-meter .caption {
+  position: relative;
+  width: 100%;
+  line-height: 28px;
+}
+
 
 .learn-more {
   height: 54px;
@@ -82,4 +96,5 @@ li {
   text-align: center;
   vertical-align: middle;
   color: #aaa;
+  height: 280px;
 }

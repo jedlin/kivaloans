@@ -27,12 +27,12 @@ module.exports = {
         const wrappedQuery = '{"' + trimmedQuery.replace(/&/g, '","').replace(/=/g,'":"') + '"}';
         // generate object using JSON.parse and it's reviver function to decode uri
         let queryObject = JSON.parse(wrappedQuery, (key, value) => { return key === "" ? value : decodeURIComponent(value) });
-        
+
         // Resolve the Promise with a final object
         resolve(queryObject);
       }
       catch (error) {
-        console.log(error);
+        // console.log(error);
         reject({error: 'Failed to parse query string.'});
       }
     });
@@ -74,15 +74,15 @@ module.exports = {
         // Convert to MinMaxRange {min:float, max:float}
         const minMaxRangeKeys = ['arrearsRate', 'avgBorrowerCost', 'defaultRate', 'lenderTerm', 'profitability', 'riskRating'];
 
-        // Convert/Ensure Bool 
+        // Convert/Ensure Bool
         const booleanKeys = ['currencyLossPossible', 'excludeNonRated', 'isGroup', 'dafEligible', 'expiringSoon'];
-        
+
         // Ensure Array of String values
         const arrayOfStringKeys = ['country', 'city_state', 'theme'];
-        
+
         // Ensure Array of Int values
         const arrayOfIntKeys = ['lenderFavorite', 'loanTags', 'matcherAccountId', 'partner', 'sector', 'activity', 'trustee'];
-        
+
         // Ensure String
         const stringKeys = ['distributionModel', 'gender', 'status'];
 
@@ -120,7 +120,7 @@ module.exports = {
             // ensure value is an array of strings
             let stringsArray = queryObject[filterKey].split(',');
             let stringsArrayFlat = '';
-            
+
             for (let s = 0; s < stringsArray.length; s++) {
               stringsArrayFlat += '"' + stringsArray[s] + '"';
               if (s !== stringsArray.length - 1) {
@@ -145,7 +145,7 @@ module.exports = {
         // wrap filters query with brackets
         gqlQueryObject.filters = '{' + gqlQueryObject.filters + '}';
 
-        console.log(gqlQueryObject);
+        // console.log(gqlQueryObject);
         // Resolve the Promise with a final object
         resolve(gqlQueryObject);
       }

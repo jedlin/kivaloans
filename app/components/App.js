@@ -15,10 +15,9 @@ class App extends React.Component {
   componentDidMount() {
     this.updateLoans();
   }
-  
+
   // fetch + format loan data then set it to state
   updateLoans() {
-    console.log(window.location.search);
     // parse query string
     queryParser.parseQueryParams(window.location.search)
       // transform query object
