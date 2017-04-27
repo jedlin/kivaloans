@@ -30,8 +30,12 @@
     "babel-preset-env": "^1.4.0",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.0",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "glob": "^7.1.1",
     "html-webpack-plugin": "^2.28.0",
+    "purifycss-webpack": "^0.6.1",
     "style-loader": "^0.16.1",
+    "styleguide": "git+ssh://git@github.com/kiva/styleguide.git",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2"
   }
