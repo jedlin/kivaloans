@@ -16,7 +16,7 @@
   "author": "Kiva",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^1.12.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4"
   },
